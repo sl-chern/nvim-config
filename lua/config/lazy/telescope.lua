@@ -6,10 +6,21 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
+        "nvim-telescope/telescope-ui-select.nvim",
     },
 
+    module = "telescope",
+
     config = function()
-        require("telescope").setup({})
+        require("telescope").setup({
+            extensions = {
+                ["ui-select"] = {
+                    require("telescope.themes").get_dropdown(),
+                },
+            },
+        })
+
+        pcall(require("telescope").load_extension, "ui-select")
 
         local builtin = require("telescope.builtin")
         vim.keymap.set("n", "<C-p>", function()

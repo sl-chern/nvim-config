@@ -3,7 +3,19 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         -- Automatically install LSPs and related tools to stdpath for Neovim
-        { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+        {
+            "williamboman/mason.nvim",
+            config = true,
+            {
+                "jay-babu/mason-nvim-dap.nvim",
+                dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
+                config = function()
+                    require("mason-nvim-dap").setup({
+                        ensure_installed = { "js" },
+                    })
+                end,
+            },
+        }, -- NOTE: Must be loaded before dependants
         "williamboman/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -42,7 +54,7 @@ return {
 
                 -- Fuzzy find all the symbols in your current document.
                 --  Symbols are things like variables, functions, types, etc.
-                map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+                -- map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 
                 -- Fuzzy find all the symbols in your current workspace.
                 --  Similar to document symbols, except searches over your entire project.
